@@ -37,13 +37,13 @@ class Window_w :
             self.iterx = 4
 
             self.var = StringVar()
-      
+    
             for stream in self.mostrar.streams.filter(progressive=True, type='video', subtype='mp4'):
                 
                 self.resultado_res = str(stream.resolution) + str(stream.fps)
                 
                 self.proper = str(stream.resolution)
-                                     
+                                    
                 self.radio = Radiobutton(self.master, text = self.resultado_res, bg = "#6B4DB2", fg = "#000000", font = "Helvetica 10 bold", variable = self.var, value = self.proper, command= mos_text_actualizado)
                 
                 if self.itery <= 2 :
@@ -95,7 +95,7 @@ class Window_w :
                 self.showvideo.insert(END, self.titulo + self.duracion )
                 
                 self.imagen_des = str(self.mostrar.thumbnail_url)
-         
+        
                 self.response = requests.get(self.imagen_des, stream=True)
 
                 self.image_re = BytesIO(self.response.content)
@@ -103,7 +103,7 @@ class Window_w :
                 self.imagen_open = Image.open(self.image_re)
 
                 self.imagen_open = self.imagen_open.resize((558, 200), Image.ANTIALIAS)
-              
+            
                 self.imagen_ori = ImageTk.PhotoImage(self.imagen_open)
 
                 self.showimagen = Label(self.master, bg="#6B4Dc2", image = self.imagen_ori)
@@ -159,14 +159,14 @@ class Window_w :
                     #llamando cuadrobox de informacion para cuando termine de descargar mas direccion de donde se guardo
 
                     messagebox.showinfo("SUCCESSFULLY", "DOWNLOADED AND SAVED IN\n" + self.download_Folder)
-      
-       
+    
+    
         def show_progress_bar(stream=None, chunk=None, bytes_remaining=None):            
 
             self.progress_bar['value'] = 0
 
             self.percent_count = float("%.2f" %(100 - ( 100 * (bytes_remaining /self.MaxfileSize))))
-         
+        
             if self.percent_count <= 100:
                 
                 self.progress_bar['value'] = self.percent_count            
@@ -177,20 +177,20 @@ class Window_w :
 
 
         def Download():
-           
+        
             if self.video_Link.get() == "" or self.download_Path.get() == "" or self.var.get() == "" :
-               
-               messagebox.showinfo("ERROR", "LINK INVALIDED \nOPTION RESOLUTION \nDIRECTION OF PATH INVALIDED \n" )
+
+                messagebox.showinfo("ERROR", "LINK INVALIDED \nOPTION RESOLUTION \nDIRECTION OF PATH INVALIDED \n" )
 
             else:    
                 self.Path_dow = self.download_Path.get()
-               
+            
                 self.getVideo = YouTube(self.video_Link.get()) 
-               
+            
                 self.video_type = self.getVideo.streams.filter(resolution = self.var.get()).first() 
-               
+            
                 self.MaxfileSize = self.video_type.filesize
-               
+            
                 Thread(target = self.getVideo.register_on_progress_callback(show_progress_bar)).start()
 
                 Thread(target = DownloadFile).start() 
@@ -208,7 +208,7 @@ class Window_w :
         self.linkText = Entry(self.master, width=50,bg="#E4D6D5", textvariable=self.video_Link,)
 
         self.search= Button(self.master, text="Search", bg="#91B24D",fg="#FFFFFF", font = "Helvetica 10 bold", command = search )
-   
+
 
         self.link_label.grid(row=1, column=0, pady=5, padx=7, sticky='nsew')
 
@@ -218,12 +218,12 @@ class Window_w :
 
 
         self.showvideo = Text(self.master, wrap=CHAR,bd=0, bg="#6B4DB2",fg="#000000",font = "Helvetica 10 bold", height=5)     
-       
+    
         self.showvideo.grid(row=3, column=0,columnspan=3, pady=5, padx=7, sticky='nsew')
-       
+    
     
         self.destination_label = Label(self.master, text="Destination    :", bg="#91B24D",fg="#FFFFFF", font = "Helvetica 10 bold")
-   
+
         self.destinationText = Entry(self.master, width=50,bg="#E4D6D5", textvariable=self.download_Path)
 
         self.browse_B = Button(self.master,text="Browse", bg="#91B24D",fg="#FFFFFF", font = "Helvetica 10 bold", command=Browse)
@@ -238,7 +238,7 @@ class Window_w :
 
 
         self.destination_label.grid(row=10, column=0, pady=5, padx=7, sticky='nsew')
-         
+        
         self.destinationText.grid(row=10, column=1, pady=5, padx=7, sticky='nsew')
 
         self.browse_B.grid(row=10, column=2, pady=5, padx=7, sticky='nsew' )
@@ -260,4 +260,4 @@ def main():
     root.mainloop()
 
 if __name__ == '__main__':
-        main()
+    main()
